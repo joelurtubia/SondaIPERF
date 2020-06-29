@@ -192,6 +192,7 @@ class networks:
 					return ETHTOOL_OPTS
 					
 			def findipadapters (self,PathLogs,selectadapter):
+			#def findipadapters (self,PathLogs):
 					#self.filexits(path)
 					f = open(PathLogs, "a")
 					f.write(('%s --  begin function findipadapters() \n')% (self.exct_time))
@@ -202,20 +203,24 @@ class networks:
 						#print adapter
 						f.write (('This is the adapter: %s\n') % (adapter))
 						addrs = netifaces.ifaddresses(adapter)
-						#print addrs
+						f.write('IP Adapter address  \n')
+						f.write(('%s \n')% (addrs))
 						try:
 							IP = addrs[netifaces.AF_INET]
 							for IPaddr in IP:
 								if (IP[0]['addr'] != '127.0.0.1'):  			
-									print IP[0]['addr']
+									#print IP[0]['addr']
 									ip = IP[0]['addr']
 									#print IP[0]['netmask']
 									mask = IP[0]['netmask']
-									print 'this is IP: '+ip
-									print '##########\n'
-									print 'this is the adapter : '+adapter
+									#print 'this is IP: '+ip
+									f.write('################################################\n')
+									f.write(('IP: %s, mask: %s, adapter: %s')%(ip,mask,adapter))
+									#print '##########\n'
+									#print 'this is the adapter : '+adapter
 									if (selectadapter == adapter):
-										print (('This is IP: %s , mask %s , adapter %s \n') % (ip,mask,adapter))
+										f.write('################################################\n')
+										f.write(('Adapter found !!!, IP: %s, mask: %s, adapter: %s')%(ip,mask,adapter))
 										return (ip,mask,adapter)						
 									
 									

@@ -14,7 +14,7 @@ import sys
 ################################################
 #########Parameters Begin
 ################################################
-fileConfig = '/home/sonda/iperf/config.cfg'
+fileConfig = 'config.cfg'
 with open(fileConfig) as f:
 	for lines in f:
 		SelectRow = lines.split(";")
@@ -30,13 +30,15 @@ with open(fileConfig) as f:
 		hostmanesonda = SelectRow[9]
 		hostelastic = SelectRow[10]
 		portelastic = SelectRow[11]
+		adapter = SelectRow[12]
 
 ################################################						
 ###call class()
 ################################################
 networkClass  = networks()
-ip,mask,gw,adapter  = networkClass.findipadapters(PathLogs)
+ip,mask,adapter  = networkClass.findipadapters(PathLogs,adapter)
 macadapter  = networkClass.findMacadapters(PathLogs,adapter)
+
 
 class MyDaemon(Daemon):
 	def run(self):
@@ -60,6 +62,7 @@ class MyDaemon(Daemon):
 						hostmanesonda = SelectRow[9]
 						hostelastic = SelectRow[10]
 						portelastic = SelectRow[11]
+						adapter = SelectRow[12]
 		
 
 				#client.json_output = True
@@ -84,6 +87,7 @@ class MyDaemon(Daemon):
 				ts = datetime.datetime.utcnow()	
 				TimetoStart = str(time.time())
 				f = open(PathLogs, "a")
+				f.write(('%s -- Begin  macadapter: %s \n') % (exct_time,macadapter))
 				f.write(('%s -- Begin  connection from server: %s \n') % (exct_time,hostname))
 				f.write(('%s -- Begin  connection server: %s port: %s \n') % (exct_time,client.server_hostname, client.port))
 				#print('Connecting to {0}:{1}'.format(client.server_hostname, client.port))
